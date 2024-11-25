@@ -1,46 +1,16 @@
-// controllers
-const holidayModel = require('../models/holidayModel');
+// routes/holidays.js
+const express = require('express');
+const router = express.Router();
+const holidaysController = require('../controllers/holidaysController');
 
-// Get all holidays
-exports.getAllHolidays = async (req, res) => {
-  try {
-    const holidays = await holidayModel.getAll();
-    res.status(200).json(holidays);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch holidays' });
-  }
-};
+router.get('/', holidaysController.getAllHolidays);
 
-// Add a new holiday
-exports.addHoliday = async (req, res) => {
-  try {
-    const { name, date, description } = req.body;
-    await holidayModel.create(name, date, description);
-    res.status(201).json({ message: 'Holiday added successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to add holiday' });
-  }
-};
+router.post('/', holidaysController.addHoliday);
 
-// Update a holiday
-exports.updateHoliday = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, date, description } = req.body;
-    await holidayModel.update(id, name, date, description);
-    res.status(200).json({ message: 'Holiday updated successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to update holiday' });
-  }
-};
+router.put('/:id', holidaysController.updateHoliday);
 
-// Delete a holiday
-exports.deleteHoliday = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await holidayModel.delete(id);
-    res.status(200).json({ message: 'Holiday deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to delete holiday' });
-  }
-};
+router.patch('/:id', holidaysController.updateHoliday);
+
+router.delete('/:id', holidaysController.deleteHoliday);
+
+module.exports = router;

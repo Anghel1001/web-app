@@ -7,7 +7,22 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Welcome to the Bank Holiday Tracker</h1>
-  <a href="/holidays">View Holidays</a>
+  <div class="container">
+    <h1>Bank Holiday Tracker</h1>
+    <table id="holidayTable">
+      <thead>
+        <tr>
+          <th>Holiday Name</th>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <button onclick="openModal()">Add Holiday</button>
+  </div>
+  <script src="/app.js"></script>
 </body>
 </html>
