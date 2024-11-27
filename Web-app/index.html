@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holiday Tracker</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Holiday Tracker</h1>
+  <div id="holiday-container"></div>
+  <script>
+    // Fetch Holidays
+    fetch('/api/holidays')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('holiday-container');
+        container.innerHTML = data.map(holiday => `
+          <div class="holiday">
+            <h2>${holiday.name}</h2>
+            <p>${holiday.description || 'No description'}</p>
+          </div>
+        `).join('');
+      });
+  </script>
+</body>
+</html>
