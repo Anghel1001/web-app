@@ -1,16 +1,9 @@
 const express = require('express');
+const holidaysRouter = require('./routes/holidays');
+
 const app = express();
-const holidaysRoutes = require('./routes/holidays');
-
 app.use(express.json());
-app.use('/api', holidaysRoutes);
-
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Something went wrong!');
-});
+app.use('/holidays', holidaysRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

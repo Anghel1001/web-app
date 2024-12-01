@@ -1,43 +1,27 @@
-const holidayModel = require('../models/holidayModel');
+const { getAllHolidays, addHoliday } = require('../models/holidayModel');
 
-function getAllHolidays(req, res) {
-    const holidays = holidayModel.getAllHolidays();
+const getHolidays = async (req, res) => {
+  try {
+    const holidays = await getAllHolidays();
     res.json(holidays);
-}
-
-function getHolidayById(req, res) {
-    const id = req.params.id;
-    const holiday = holidayModel.getHolidayById(id);
-    if (holiday) {
-        res.json(holiday);
-    } else {
-        res.status(404).send('Holiday not found');
-    }
-}
-
-function addHoliday(req, res) {
-    const { name, date } = req.body;
-    const info = holidayModel.addHoliday(name, date);
-    res.status(201).json(info);
-}
-
-function updateHoliday(req, res) {
-    const id = req.params.id;
-    const { name, date } = req.body;
-    const info = holidayModel.updateHoliday(id, name, date);
-    res.json(info);
-}
-
-function deleteHoliday(req, res) {
-    const id = req.params.id;
-    const info = holidayModel.deleteHoliday(id);
-    res.json(info);
-}
-
-module.exports = {
-    getAllHolidays,
-    getHolidayById,
-    addHoliday,
-    updateHoliday,
-    deleteHoliday
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch holidays' });
+  }
 };
+
+const createHoliday = async (req, res) => {
+  const { name, date } = req.body;
+
+  if (!name || !date) {
+    return res.status(400).json({ error: 'Name and date are required' });
+  }
+
+  try {
+    const id = await addHoliday(name, date);
+    res.status(201).json({ message: 'Holiday added successfully', id });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add holiday' });
+  }
+};
+
+module.exports = { getHolidays, createHoliday };
