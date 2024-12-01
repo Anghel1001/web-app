@@ -1,14 +1,35 @@
 {
   "name": "web-app",
   "version": "1.0.0",
+  "description": "A simple holiday management web app using Express and SQLite.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
     "dev": "nodemon app.js",
-    "init-db": "node models/initDatabase.js"
+    "init-db": "node models/initDatabase.js",
+    "lint": "eslint .",
+    "test": "echo \"No tests defined yet!\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "keywords": [
+    "express",
+    "sqlite3",
+    "holiday",
+    "web-app",
+    "crud",
+    "nodejs"
+  ],
+  "author": "Angel Salvador",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.1",
+    "path": "^0.12.7",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^9.16.0",
+    "nodemon": "^3.1.7"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }
