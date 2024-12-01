@@ -1,13 +1,4 @@
-const sqlite3 = require("sqlite3").verbose();
-const path = require("path");
-
-const dbPath = path.resolve(__dirname, "../database.db");
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error("Failed to connect to the database:", err.message);
-    } else {
-        console.log("Connected to the SQLite database.");
-    }
-});
-
+const Database = require('better-sqlite3');
+const db = new Database('./data/mydatabase.db', { verbose: console.log });
+db.prepare('SELECT 1').get();
 module.exports = db;

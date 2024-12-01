@@ -1,20 +1,43 @@
-const Holiday = require("../models/holidayModel");
+const holidayModel = require('../models/holidayModel');
 
-exports.getHolidays = async (req, res) => {
-    try {
-        const holidays = await Holiday.getAll();
-        res.status(200).json(holidays);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+function getAllHolidays(req, res) {
+    const holidays = holidayModel.getAllHolidays();
+    res.json(holidays);
+}
 
-exports.addHoliday = async (req, res) => {
-    const { name, description } = req.body;
-    try {
-        const newHoliday = await Holiday.create(name, description);
-        res.status(201).json(newHoliday);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+function getHolidayById(req, res) {
+    const id = req.params.id;
+    const holiday = holidayModel.getHolidayById(id);
+    if (holiday) {
+        res.json(holiday);
+    } else {
+        res.status(404).send('Holiday not found');
     }
+}
+
+function addHoliday(req, res) {
+    const { name, date } = req.body;
+    const info = holidayModel.addHoliday(name, date);
+    res.status(201).json(info);
+}
+
+function updateHoliday(req, res) {
+    const id = req.params.id;
+    const { name, date } = req.body;
+    const info = holidayModel.updateHoliday(id, name, date);
+    res.json(info);
+}
+
+function deleteHoliday(req, res) {
+    const id = req.params.id;
+    const info = holidayModel.deleteHoliday(id);
+    res.json(info);
+}
+
+module.exports = {
+    getAllHolidays,
+    getHolidayById,
+    addHoliday,
+    updateHoliday,
+    deleteHoliday
 };

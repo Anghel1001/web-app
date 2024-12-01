@@ -1,25 +1,16 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const path = require("path");
-const holidaysRoutes = require("./routes/holidays");
-
+const express = require('express');
 const app = express();
-const PORT = 3000;
+const holidaysRoutes = require('./routes/holidays');
 
-// Middleware to serve static files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
+app.use('/api', holidaysRoutes);
 
-// Middleware for parsing JSON
-app.use(bodyParser.json());
-
-// API routes
-app.use("/api/holidays", holidaysRoutes);
-
-// Render the HTML page
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "index.html"));
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send('Something went wrong!');
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
