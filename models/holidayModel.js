@@ -1,25 +1,34 @@
 const db = require('./database');
 
 const getAllHolidays = () => {
-  return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM holidays', [], (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const stmt = db.prepare('SELECT * FROM holidays');
+  return stmt.all();
 };
 
-const addHoliday = (name, date) => {
-  return new Promise((resolve, reject) => {
-    db.run(
-      'INSERT INTO holidays (name, date) VALUES (?, ?)',
-      [name, date],
-      function (err) {
-        if (err) reject(err);
-        else resolve(this.lastID);
-      }
-    );
-  });
+const getHolidayById = (id) => {
+  const stmt = db.prepare('SELECT * FROM holidays WHERE id = ?');
+  return stmt.get(id);
 };
 
-module.exports = { getAllHolidays, addHoliday };
+const createHoliday = (name, date) => {
+  const stmt = db.prepare('INSERT INTO holidays (name, date) VALUES (?, ?)');
+  return stmt.run(name, date);
+};
+
+const updateHoliday = (id, name, date) => {
+  const stmt = db.prepare('UPDATE holidays SET name = ?, date = ? WHERE id = ?');
+  return stmt.run(name, date, id);
+};
+
+const deleteHoliday = (id) => {
+  const stmt = db.prepare('DELETE FROM holidays WHERE id = ?');
+  return stmt.run(id);
+};
+
+module.exports = {
+  getAllHolidays,
+  getHolidayById,
+  createHoliday,
+  updateHoliday,
+  deleteHoliday
+};

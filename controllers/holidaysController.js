@@ -1,27 +1,54 @@
-const { getAllHolidays, addHoliday } = require('../models/holidayModel');
+const holidayModel = require('../models/holidayModel');
 
-const getHolidays = async (req, res) => {
-  try {
-    const holidays = await getAllHolidays();
-    res.json(holidays);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch holidays' });
+const getAllHolidays = (req, res) => {
+  const holidays = holidayModel.getAllHolidays();
+  res.json(holidays);
+};
+
+const getHolidayById = (req, res) => {
+  const holiday = holidayModel.getHolidayById(req.params.id);
+  if (holiday) {
+    res.json(holiday);
+  } else {
+    res.status(404).send('Holiday not found');
   }
 };
 
-const createHoliday = async (req, res) => {
+const createHoliday = (req, res) => {
   const { name, date } = req.body;
-
-  if (!name || !date) {
-    return res.status(400).json({ error: 'Name and date are required' });
-  }
-
-  try {
-    const id = await addHoliday(name, date);
-    res.status(201).json({ message: 'Holiday added successfully', id });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to add holiday' });
+  if (name && date) {
+    holidayModel.createHoliday(name, date);
+    res.status(201).send('Holiday created');
+  } else {
+    res.status(400).send('Name and date are required');
   }
 };
 
-module.exports = { getHolidays, createHoliday };
+const updateHoliday = (req, res) => {
+  const { name, date } = req.body;
+  const holiday = holidayModel.getHolidayById(req.params.id);
+  if (holiday) {
+    holidayModel.updateHoliday(req.params.id, name, date);
+    res.send('Holiday updated');
+  } else {
+    res.status(404).send('Holiday not found');
+  }
+};
+
+const deleteHoliday = (req, res) => {
+  const holiday = holidayModel.getHolidayById(req.params.id);
+  if (holiday) {
+    holidayModel.deleteHoliday(req.params.id);
+    res.send('Holiday deleted');
+  } else {
+    res.status(404).send('Holiday not found');
+  }
+};
+
+module.exports = {
+  getAllHolidays,
+  getHolidayById,
+  createHoliday,
+  updateHoliday,
+  deleteHoliday
+};
