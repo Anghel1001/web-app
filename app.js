@@ -1,9 +1,33 @@
 const express = require('express');
-const holidaysRouter = require('./routes/holidays');
+const sqlite3 = require('sqlite3');
+const path = require('path');
 
+// Initialize app
 const app = express();
-app.use(express.json());
-app.use('/holidays', holidaysRouter);
+const port = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Set up a SQLite database
+const db = new sqlite3.Database('./database/holidays.db');
+
+// Get holidays from the database
+app.get('/holidays', (req, res) => {
+  db.all("SELECT * FROM holidays", [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    res.json(rows);
+  });
+});
+
+// Serve the index.html file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

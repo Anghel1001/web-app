@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holiday API</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Holiday List</h1>
+    <ul id="holiday-list"></ul>
+  </div>
+
+  <script>
+    fetch('/holidays')
+      .then(response => response.json())
+      .then(data => {
+        const holidayList = document.getElementById('holiday-list');
+        data.forEach(holiday => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `${holiday.name} - ${holiday.date}`;
+          holidayList.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error('Error fetching holidays:', error));
+  </script>
+</body>
+</html>
