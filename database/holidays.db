@@ -1,9 +1,0 @@
--- holidays.sql
-CREATE TABLE holidays (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  date TEXT NOT NULL
-);
-
-INSERT INTO holidays (name, date) VALUES ('Christmas', '2024-12-25');
-INSERT INTO holidays (name, date) VALUES ('New Year', '2025-01-01');
