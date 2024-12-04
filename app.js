@@ -1,34 +1,33 @@
 const express = require('express');
+const axios = require('axios');
 const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
-const { open } = require('sqlite');
-const itemsRoutes = require('./routes/items');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Set up view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Serve static files like CSS
 app.use(express.static(path.join(__dirname, 'public')));
 
-(async () => {
-  const db = await open({
-    filename: './database/db.sqlite',
-    driver: sqlite3.Database,
-  });
+// Fetch bank holiday data
+const fetchBankHolidays = async () => {
+  try {
+    const response = await axios.get('https://publicholidaysapi.com/holidays?country=GB&year=2024');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching bank holidays:", error);
+    return [];
+  }
+};
 
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS items (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      description TEXT,
-      date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+// Route to display items and bank holidays
+app.get('/', async (req, res) => {
+  const holidays = await fetchBankHolidays();
+  res.render('index', { holidays });
+});
 
-  app.locals.db = db;
-})();
-
-app.use('/api/items', itemsRoutes);
-
-app.get('/', (req, res) => 
+// Add additional routes for items CRUD...
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});

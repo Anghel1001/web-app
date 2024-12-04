@@ -1,19 +1,23 @@
 {
-    "name": "web-app",
-    "version": "1.0.0",
-    "description": "A Node.js web application with CRUD functionality and Bank Holidays API integration",
-    "main": "app.js",
-    "scripts": {
-      "start": "node app.js",
-      "vercel-build": "echo 'No build step for Vercel'",
-      "start": "node server.js"
-    },
-    "dependencies": {
-      "express": "^4.18.2",
-      "sqlite3": "^5.1.6"
-    },
-    "devDependencies": {},
-    "author": "Angel Rhyzelle Salvador",
-    "license": "ISC"
+  "name": "web-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "axios": "^1.7.9",
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "method-override": "^3.0.0",
+    "postcss": "^8.4.49",
+    "sqlite3": "^5.1.7",
+    "tailwindcss": "^3.4.16"
   }
-  
+}
